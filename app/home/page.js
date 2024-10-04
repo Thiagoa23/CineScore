@@ -1,10 +1,19 @@
+import React from 'react';
+import Header from '../../components/Header';
+import styles from '../../styles/Home.module.css'; // Importa os estilos para a Home
 
-export default function Home() {
-    return (
-      <div>
-        <h1>Bem-vindo à Página Home</h1>
-        <p>Esta é a página inicial.</p>
+const Home = () => {
+  return (
+    <div>
+      <Header />
+      <div className={styles.container}>
+        <main className={styles.main}>
+          <h2 className={styles.heading}>Bem-vindo ao Cine Store</h2>
+          <p className={styles.paragraph}>Explore os melhores filmes e veja avaliações feitas por outros usuários!</p>
+        </main>
       </div>
-    );
-  }
-  
+    </div>
+  );
+};
+
+export default Home;
