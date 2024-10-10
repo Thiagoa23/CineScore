@@ -1,0 +1,19 @@
+.container {
+  padding-left: 50px;
+  padding-right: 50px;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0 auto; 
+}
+
+.genreSection {
+  margin-bottom: 2rem; 
+}
+
+
+.moviesGrid {
+  display: flex;
+  justify-content: space-between; 
+  gap: 1.5rem; 
+}
+
