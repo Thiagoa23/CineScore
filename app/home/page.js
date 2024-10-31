@@ -6,6 +6,7 @@ import styles from "./Home.module.css";
 import Carousel from '../components/Carrossel/Carousel';
 import Top10Carousel from '../components/Carrossel/Top 10/CarrosselTop10';
 import MovieCard from '../components/Card/Movie Card/MovieCard';
+import Input from "../components/Input/Input";
 
 //Slider
 
@@ -30,7 +31,7 @@ const Home = () => {
     
       <main className={styles.main}>
         <div className={styles.section1}>
-          {/* Conteúdo da seção 1 */}
+          <Input />
         </div>
 
         <div className={styles.section2}>
