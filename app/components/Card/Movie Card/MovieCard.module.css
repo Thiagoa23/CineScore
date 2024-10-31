@@ -1,0 +1,64 @@
+/* Estilos base para o MovieCard */
+.movieCard {
+  width: 200px;
+  border-radius: 10px;
+  color: white;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.top10Card {
+  width: 18vw;
+  height: 25vh;
+}
+
+.imageContainer {
+  background-color: #b3b3b3;
+  border-radius: 20px;
+  width: 100%;
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+}
+
+.info {
+  padding: 10px;
+}
+
+.info h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Estilos para a classificação e gênero lado a lado */
+.details {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.details span {
+  font-size: 14px;
+}
+
+.separator {
+  margin: 0 8px; /* Espaçamento ao redor da linha */
+  font-weight: bold;
+  color: #b3b3b3; /* Cor da linha divisória */
+}
+
+/* Estilo para o gênero */
+.genre {
+  color: #b3b3b3;
+}
+
+/* Estilo para o container da lista de filmes */
+.movieList {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+

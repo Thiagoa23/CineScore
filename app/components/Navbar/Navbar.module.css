@@ -1,0 +1,34 @@
+.navbar {
+  display: flex;
+  flex-direction: column; /* Para alinhar os links verticalmente */
+  justify-content: flex-start;
+  padding: 2.1%; /* Margens laterais responsivas */
+  width: 15%; /* Largura fixa da navbar */
+  height: 100vh; /* Navbar ocupa a altura inteira da tela */
+  position: fixed;
+}
+
+.navItems {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.navItem {
+  margin-top: 45px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 30px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  background-color: red;
+  transition: background-color 0.3s ease;
+}
+
+.navItem:hover {
+  background-color: darkred; /* Mudança de cor ao passar o mouse */
+}
+
+.logoutButton{
+  margin-bottom: 45px;
+}

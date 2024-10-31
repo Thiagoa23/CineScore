@@ -1,0 +1,58 @@
+/* carousel.module.css */
+.carouselContainer {
+    width: 100%;
+    height: 36.13vh; /* Altura proporcional à altura total da tela */
+    position: relative;
+    overflow: hidden;
+    margin-top: 5vh;
+  }
+  
+  .carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* O carrossel ocupará toda a altura definida no container */
+  }
+  
+  .carouselContent {
+    display: flex;
+    width: 100%;
+    position: relative;
+    height: 100%;
+  }
+  
+  .carouselItem {
+    min-width: 100%;
+    transition: transform 0.5s ease-in-out;
+    height: 100%; /* A imagem ocupará toda a altura disponível */
+  }
+  
+  .carouselItem img {
+    width: 100%;
+    height: 100%; /* A imagem agora preencherá o espaço total do carrossel */
+  }
+  
+  .carouselItem h3, .carouselItem p {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .prevButton, .nextButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .prevButton {
+    left: 10px;
+  }
+  
+  .nextButton {
+    right: 10px;
+  }
+  
