@@ -1,14 +1,14 @@
+// MovieCarousel.js
 import React, { useRef, useState } from "react";
-import styles from './CarrosselTop10.module.css';
+import styles from './CarrosselMovie.module.css';
 import { register } from 'swiper/element/bundle';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import Top10MovieCard from '../../Card/Card Top 10/MovieCardTop10';
+import MovieCard from '../../Card/Movie Card/MovieCard';
 
 register();
 import 'swiper/css';
 
-const Top10Carousel = ({ movies }) => {
-  const extendedMovies = [...movies];
+const MovieCarousel = ({ movies }) => {
   const swiperRef = useRef(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
@@ -33,14 +33,15 @@ const Top10Carousel = ({ movies }) => {
         )}
         <Swiper
           ref={swiperRef}
-          slidesPerView={4}
-          slidesPerGroup={3}
+          slidesPerView={6.5}
+          slidesPerGroup={5}
+          loop={true}
           speed={1000}
           onSlideChange={handleSlideChange}
         >
-          {extendedMovies.map((movie, index) => (
+          {movies.map((movie, index) => (
             <SwiperSlide key={index} className={styles.swiperSlide}>
-              <Top10MovieCard movie={movie} rank={(index % movies.length) + 1} />
+              <MovieCard movie={movie} isTop10={false} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -57,4 +58,4 @@ const Top10Carousel = ({ movies }) => {
   );
 };
 
-export default Top10Carousel;
+export default MovieCarousel;

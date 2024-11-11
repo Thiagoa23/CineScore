@@ -22,13 +22,6 @@ const Banner = ({ movie }) => {
         <div className={styles.textContainer}>
           <h2 className={styles.name}>{movie.name}</h2>
           <p className={styles.synopsis}>{truncatedSynopsis}</p>
-          
-          {/* Condição para exibir "Ver mais" somente se o texto estiver truncado */}
-          {movie.synopsis.length > characterLimit && !expanded && (
-            <a onClick={toggleExpand} className={styles.readMore}>
-              Ver mais
-            </a>
-          )}
           <div className={styles.ratingContainer}>
             <span className={styles.rating}>⭐ {movie.rating}</span>
             <button className={styles.classifyButton}>
