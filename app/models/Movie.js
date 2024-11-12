@@ -1,15 +1,16 @@
 class Movie {
-  constructor(id, title, primaryGenre, genres, rating, synopsis, imageUrl, releaseDate, director, actors) {
+  constructor({ id, name, primaryGenre, otherGenres, rating, synopsis, imageUrl, releaseDate, director, actors, comments }) {
     this.id = id;
-    this.title = title;
-    this.primaryGenre = primaryGenre;    // Gênero principal do filme
-    this.genres = genres;                // Lista de outros gêneros associados
+    this.name = name;
+    this.primaryGenre = primaryGenre;    // Gênero principal
+    this.otherGenres = otherGenres;      // Lista de outros gêneros
     this.rating = rating;
     this.synopsis = synopsis;
     this.imageUrl = imageUrl;
     this.releaseDate = releaseDate;
     this.director = director;
     this.actors = actors;
+    this.comments = comments;
   }
 }
 

@@ -10,6 +10,7 @@ const CarrosselBanner = ({ banners }) => {
   return (
     <div className={styles.carouselContainer}>
       <Swiper
+        className={styles.swiper}
         slidesPerView={1}
         speed={1000}
         autoplay={{
