@@ -11,6 +11,7 @@ const useTop10Movies = () => {
       try {
         const topMovies = await getTop10Movies();
         setTop10Movies(topMovies);
+        console.log("Top 10 Movies:", topMovies); // Adiciona este console.log para verificação
       } catch (error) {
         setErrorTop10(error.message);
       } finally {

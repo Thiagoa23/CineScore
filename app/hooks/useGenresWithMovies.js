@@ -1,7 +1,8 @@
-// hooks/useGenresWithMovies.js
 import { useState, useEffect } from 'react';
 import { getAllGenres } from '../services/GenreService';
 import { getMoviesByGenre } from '../services/movieService';
+import Genre from '../models/Genre';
+import Movie from '../models/Movie';
 
 const useGenresWithMovies = () => {
   const [genresWithMovies, setGenresWithMovies] = useState([]);
@@ -9,24 +10,32 @@ const useGenresWithMovies = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchGenresWithMovies = async () => {
+    const fetchGenresAndMovies = async () => {
       try {
-        const genres = await getAllGenres();
+        const genresData = await getAllGenres();
+        const genresList = genresData.map(genreData => new Genre(genreData));
+
         const genresWithMoviesData = await Promise.all(
-          genres.map(async (genre) => {
-            const movies = await getMoviesByGenre(genre.id);
-            return { genre, movies };
+          genresList.map(async (genre) => {
+            const moviesData = await getMoviesByGenre(genre.id);
+            const moviesList = moviesData.map(movieData => new Movie(movieData));
+            return {
+              genre,
+              movies: moviesList,
+            };
           })
         );
+
         setGenresWithMovies(genresWithMoviesData);
-      } catch (error) {
-        setError(error.message);
+      } catch (err) {
+        console.error('Erro ao carregar gêneros e seus filmes:', err);
+        setError(err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchGenresWithMovies();
+    fetchGenresAndMovies();
   }, []);
 
   return { genresWithMovies, loading, error };

@@ -43,7 +43,7 @@ const Home = () => {
           <div>Carregando gêneros...</div>
         ) : (
           genresWithMovies.map(({ genre, movies }) => (
-            <GenreSection key={genre.id} genreName={genre.name} movies={movies} />
+            <GenreSection key={genre.id} genre={genre} movies={movies} />
           ))
         )}
         {error && <div>Erro ao carregar gêneros e filmes: {error}</div>}

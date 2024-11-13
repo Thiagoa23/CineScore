@@ -1,3 +1,4 @@
+// components/Carrossel/Top10Carousel.js
 import React, { useRef, useState } from "react";
 import styles from './CarrosselTop10.module.css';
 import { register } from 'swiper/element/bundle';
@@ -39,8 +40,8 @@ const Top10Carousel = ({ movies }) => {
           onSlideChange={handleSlideChange}
         >
           {extendedMovies.map((movie, index) => (
-            <SwiperSlide key={index} className={styles.swiperSlide}>
-              <Top10MovieCard movie={movie} rank={(index % movies.length) + 1} />
+            <SwiperSlide key={movie.id} className={styles.swiperSlide}>
+              <Top10MovieCard movie={movie} rank={index + 1} />
             </SwiperSlide>
           ))}
         </Swiper>
