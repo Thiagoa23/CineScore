@@ -20,25 +20,23 @@ export const getMovieById = async (movieId) => {
   };
 };
 
-// services/movieService.js
 export const getTop10Movies = async () => {
   const data = await fetchAPI('/movies/top10');
   return data.map(movieData => ({
-    id: movieData.id, // Inclui apenas os dados mínimos
+    id: movieData.id,
     name: movieData.name,
-    image: movieData.image,
+    imageUrl: movieData.imageUrl, // Corrige para imageUrl
     rating: movieData.rating,
     primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : 'Gênero Desconhecido'
   }));
 };
 
-
 export const getMoviesByGenre = async (genreId) => {
   const data = await fetchAPI(`/movies/genre/${genreId}?limit=20`);
   return data.map(movieData => ({
-    id: movieData.id, // Inclui apenas os dados mínimos
+    id: movieData.id,
     name: movieData.name,
-    image: movieData.image,
+    imageUrl: movieData.imageUrl, // Corrige para imageUrl
     rating: movieData.rating,
     primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : 'Gênero Desconhecido'
   }));

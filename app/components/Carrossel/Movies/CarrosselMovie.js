@@ -41,7 +41,13 @@ const MovieCarousel = ({ movies }) => {
         >
           {movies.map((movie, index) => (
             <SwiperSlide key={index} className={styles.swiperSlide}>
-              <MovieCard movie={movie} isTop10={false} />
+              <MovieCard
+                title={movie.title}
+                genre={movie.genre}
+                rating={movie.rating}
+                imageUrl={movie.imageUrl}
+                isTop10={false} // ou true, dependendo do contexto
+              />
             </SwiperSlide>
           ))}
         </Swiper>

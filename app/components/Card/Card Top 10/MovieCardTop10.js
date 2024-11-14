@@ -7,7 +7,13 @@ const Top10MovieCard = ({ movie, rank }) => {
   return (
     <div className={styles.movieWrapper}>
       <span className={styles.rank}>{rank}</span>
-      <MovieCard movie={movie} isTop10={true} />
+      <MovieCard
+        title={movie.name}
+        genre={movie.primaryGenre}
+        rating={movie.rating}
+        imageUrl={movie.imageUrl}
+        isTop10={true}
+      />
     </div>
   );
 };
