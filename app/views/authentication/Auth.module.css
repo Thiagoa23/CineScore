@@ -1,0 +1,89 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('/path/to/background-image.jpg') no-repeat center center/cover;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Garante que o modal esteja acima de outros elementos */
+    overflow: hidden;
+}
+
+
+.authBox {
+    width: 300px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1); /* Transparente */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+    position: relative;
+    z-index: 1001;
+}
+
+
+.title {
+    margin-bottom: 20px;
+}
+
+.inputGroup {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.inputField {
+    width: 100%;
+    padding: 10px 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: white;
+}
+
+.authButton {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.authButton:hover {
+    background-color: #ddd;
+}
+
+.text {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.toggle {
+    color: #ddd;
+    cursor: pointer;
+    text-decoration: underline;
+}

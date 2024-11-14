@@ -1,7 +1,7 @@
 // views/home/Home.js
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Input from "../../components/Input/Input";
 import BannerCarousel from '../../components/Carrossel/Banner/CarrosselBanner';
@@ -13,6 +13,12 @@ import useTop10Movies from '../../hooks/useTop10Movies';
 import styles from './Home.module.css';
 
 const Home = () => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto'; // Reativa o scroll ao remover o modal
+    };
+  }, []);
   const { genresWithMovies, loading, error } = useGenresWithMovies();
   const { latestMovies, error: latestMoviesError } = useLatestMovies();
   const { top10Movies, error: top10MoviesError } = useTop10Movies();
@@ -20,6 +26,7 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <Navbar />
+
       <main className={styles.main}>
         <div className={styles.section1}>
           <Input />
