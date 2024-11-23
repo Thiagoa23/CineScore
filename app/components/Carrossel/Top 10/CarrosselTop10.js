@@ -38,9 +38,10 @@ const Top10Carousel = ({ movies }) => {
           slidesPerGroup={3}
           speed={1000}
           onSlideChange={handleSlideChange}
+          className={styles.swiper}
         >
           {extendedMovies.map((movie, index) => (
-            <SwiperSlide key={movie.id} className={styles.swiperSlide}>
+            <SwiperSlide key={movie.id}>
               <Top10MovieCard movie={movie} rank={index + 1} />
             </SwiperSlide>
           ))}

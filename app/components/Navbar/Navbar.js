@@ -1,20 +1,23 @@
+// components/TopNav/TopNav.js
 import React from 'react';
 import styles from './Navbar.module.css';
-import LogoutButton from "../LogoutButton/LogoutButton";
+import Link from 'next/link';
+import SearchBar from './SearchBar/SearchBar';
 
-const Navbar = () => {
+const Navbar = ({ openAuthModal }) => {
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.navItems}>
-        <a href="/" className={styles.navItem}>Home</a>
-        <a href="/about" className={styles.navItem}>About</a>
-        <a href="/services" className={styles.navItem}>Services</a>
-        <a href="/contact" className={styles.navItem}>Contact</a>
+    <div className={styles.Nav}>
+      <div className={styles.logo}>CineScore</div>
+      <div className={styles.navLinks}>
+        <Link href="/" className={styles.navLink}>Home</Link>
+        <Link href="/views/filmes" className={styles.navLink}>Filmes</Link>
+        <Link href="/suporte" className={styles.navLink}>Suporte</Link>
       </div>
-      <div className={styles.logoutContainer}>
-        <LogoutButton className={styles.logoutButton}/>
+      <div className={styles.searchContainer}>
+      <SearchBar />
       </div>
-    </nav>
+      <button className={styles.signUpButton} onClick={openAuthModal}>Sign Up</button>
+    </div>
   );
 };
 

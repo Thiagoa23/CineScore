@@ -2,10 +2,18 @@
 import { fetchAPI } from './apiClient';
 import Movie from '../models/Movie';
 
+// Helper para formatar a data de lançamento
+const formatReleaseDate = (date) => {
+  if (!date) return "Data desconhecida";
+  const formattedDate = new Date(date);
+  return !isNaN(formattedDate) ? formattedDate.getFullYear() : "Data desconhecida";
+};
+
 export const getAllMovies = async () => {
   const data = await fetchAPI('/movies');
   return data.map(movieData => ({
     ...new Movie(movieData),
+    releaseDate: formatReleaseDate(movieData.releaseDate), // Formata a data
     primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : '', // Garante que seja uma string
     otherGenres: movieData.otherGenreNames || [],   // Garante que otherGenres seja uma lista vazia se não existir
   }));
@@ -15,6 +23,7 @@ export const getMovieById = async (movieId) => {
   const data = await fetchAPI(`/movies/${movieId}`);
   return {
     ...new Movie(data),
+    releaseDate: formatReleaseDate(data.releaseDate), // Formata a data
     primaryGenre: typeof data.primaryGenreName === 'string' ? data.primaryGenreName : '', // Garante que seja uma string
     otherGenres: data.otherGenreNames || [],   // Garante que otherGenres seja uma lista vazia se não existir
   };
@@ -27,7 +36,10 @@ export const getTop10Movies = async () => {
     name: movieData.name,
     imageUrl: movieData.imageUrl, // Corrige para imageUrl
     rating: movieData.rating,
-    primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : 'Gênero Desconhecido'
+    releaseDate: formatReleaseDate(movieData.releaseDate), // Formata a data
+    primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : 'Gênero Desconhecido',
+    otherGenres: movieData.otherGenreNames || [],
+    synopsis: movieData.synopsis || ''
   }));
 };
 
@@ -36,9 +48,12 @@ export const getMoviesByGenre = async (genreId) => {
   return data.map(movieData => ({
     id: movieData.id,
     name: movieData.name,
-    imageUrl: movieData.imageUrl, // Corrige para imageUrl
+    imageUrl: movieData.imageUrl,
     rating: movieData.rating,
-    primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : 'Gênero Desconhecido'
+    releaseDate: formatReleaseDate(movieData.releaseDate), // Formata a data
+    primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : 'Gênero Desconhecido',
+    otherGenres: movieData.otherGenres || [], // Corrige para incluir os gêneros
+    synopsis: movieData.synopsis || ''
   }));
 };
 
@@ -46,7 +61,23 @@ export const getLatestMovies = async () => {
   const data = await fetchAPI('/movies/latest');
   return data.map(movieData => ({
     ...new Movie(movieData),
+    releaseDate: formatReleaseDate(movieData.releaseDate), // Formata a data
     primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : '', // Garante que seja uma string
     otherGenres: movieData.otherGenreNames || [],   // Garante que otherGenres seja uma lista vazia se não existir
+  }));
+};
+
+// Função para buscar filmes pelo nome
+export const searchMoviesByName = async (query) => {
+  const data = await fetchAPI(`/movies/search?query=${query}`);
+  return data.map(movieData => ({
+    id: movieData.id,
+    name: movieData.name,
+    imageUrl: movieData.imageUrl,
+    rating: movieData.rating,
+    releaseDate: formatReleaseDate(movieData.releaseDate), // Formata a data
+    primaryGenre: typeof movieData.primaryGenreName === 'string' ? movieData.primaryGenreName : 'Gênero Desconhecido',
+    otherGenres: movieData.otherGenreNames || [], // Adiciona os gêneros secundários
+    synopsis: movieData.synopsis || ''       // Adiciona a sinopse
   }));
 };

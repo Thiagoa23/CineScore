@@ -3,8 +3,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
-import TopNav from '../../components/Header/TopNav'; // Importando o novo componente
-import Input from "../../components/Input/Input";
 import BannerCarousel from '../../components/Carrossel/Banner/CarrosselBanner';
 import Top10Carousel from '../../components/Carrossel/Top 10/CarrosselTop10';
 import GenreSection from '../../components/GenreSection/GenreSection';
@@ -40,7 +38,7 @@ const Home = () => {
 
       <main className={styles.main}>
         <div className={styles.section1}>
-          <TopNav openAuthModal={openAuthModal} /> {/* Adicionando o novo componente */}
+          <Navbar openAuthModal={openAuthModal} /> {/* Adicionando o novo componente */}
         </div>
 
         {/* Carrossel de Destaque */}
