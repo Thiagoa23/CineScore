@@ -6,6 +6,8 @@ import useGenres from "../../hooks/useGenres";
 import { searchMoviesByName } from "../../services/movieService";
 import { getMovieById } from "../../services/movieService";
 import { deleteMovie } from "../../services/movieService";
+import { addMovie } from "../../services/movieService"; // Certifique-se de que o caminho está correto
+
 import Alert from "../../components/Alert/page"
 import Navbar from "@/app/components/Navbar/Navbar";
 
@@ -155,36 +157,45 @@ const AdminPage = () => {
     };
 
 
-    const handleSubmitFilm = () => {
-        console.log("Film data submitted:", filmData);
-        // Adicionar lógica de requisição API
+    const validateFilmData = () => {
+        const { name, synopsis, releaseDate, director, primaryGenre } = filmData;
+        return name && synopsis && releaseDate && director && primaryGenre;
     };
 
-    const handleDeleteFilm = async () => {
-        if (!filmData.id) {
-            Alert.show("Por favor, selecione um filme antes de deletar.", "error");
+    const handleAddFilm = async () => {
+        console.log("Tentando adicionar filme com os seguintes dados:", filmData);
+
+        if (!validateFilmData()) {
+            showAlert("Por favor, preencha todos os campos obrigatórios antes de adicionar o filme.");
+            console.log("Validação falhou: campos obrigatórios não preenchidos.");
             return;
         }
 
-        const confirmDelete = window.confirm(
-            `Tem certeza de que deseja deletar o filme "${filmData.name}"?`
-        );
-        if (!confirmDelete) return;
-
         try {
-            await deleteMovie(filmData.id, { username: "admin", password: "admin123" });
-            Alert.show("Filme deletado com sucesso!", "success");
+            // Converte os atores para um array de strings
+            const preparedFilmData = {
+                ...filmData,
+                actors: filmData.actors.split(",").map((actor) => actor.trim()), // Converte string em array
+            };
+
+            console.log("Enviando dados para o backend:", preparedFilmData);
+            const addedMovie = await addMovie(preparedFilmData);
+
+            console.log("Resposta do backend ao adicionar o filme:", addedMovie);
+            showAlert(`Filme "${addedMovie.name}" adicionado com sucesso!`);
             handleClearFields();
-            setSearchResults([]);
+            setSearchResults([...searchResults, addedMovie]);
         } catch (error) {
-            console.error("Erro ao deletar o filme:", error);
-            Alert.show("Erro ao deletar o filme. Tente novamente.", "error");
+            console.error("Erro ao adicionar o filme:", error);
+            showAlert("Erro ao adicionar o filme. Tente novamente.");
         }
     };
 
+
+
     return (
         <div className={styles.container}>
-            <Navbar/>
+            <Navbar />
             <h1 className={styles.title}>Cadastrar Filme</h1>
 
             <div className={styles.section}>
@@ -265,6 +276,7 @@ const AdminPage = () => {
                                 onChange={handleFilmInputChange}
                                 className={styles.inputField}
                             />
+
                         </div>
                         <input
                             type="text"
@@ -317,9 +329,10 @@ const AdminPage = () => {
 
                 {/* Botões de Ação */}
                 <div className={styles.flexRow}>
-                    <button onClick={handleSubmitFilm} className={styles.button}>
-                        Cadastrar Filme
+                    <button onClick={handleAddFilm} className={styles.button}>
+                        Adicionar Filme
                     </button>
+
                     <button onClick={handleClearFields} className={styles.button}>
                         Limpar Campos
                     </button>

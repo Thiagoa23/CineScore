@@ -1,5 +1,5 @@
 // services/movieService.js
-import { fetchAPI } from './apiClient';
+import { fetchAPI } from "./apiClient"; 
 import Movie from '../models/Movie';
 
 // Helper para formatar a data de lançamento
@@ -94,7 +94,20 @@ export const deleteMovie = async (movieId) => {
   if (!response.ok) {
     throw new Error("Erro ao deletar o filme");
   }
-  return response.json(); 
+  return response.json();
+};
+
+export const addMovie = async (movie) => {
+  try {
+      const response = await fetchAPI("/movies", {
+          method: "POST",
+          body: JSON.stringify(movie),
+      });
+      return response; // Retorna os dados do filme adicionado
+  } catch (error) {
+      console.error("Erro ao adicionar o filme:", error.message);
+      throw error;
+  }
 };
 
 
