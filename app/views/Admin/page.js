@@ -5,6 +5,9 @@ import styles from "./AdminPage.module.css";
 import useGenres from "../../hooks/useGenres";
 import { searchMoviesByName } from "../../services/movieService";
 import { getMovieById } from "../../services/movieService";
+import { deleteMovie } from "../../services/movieService";
+import Alert from "../../components/Alert/page"
+import Navbar from "@/app/components/Navbar/Navbar";
 
 const AdminPage = () => {
     const [filmData, setFilmData] = useState({
@@ -22,6 +25,57 @@ const AdminPage = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [openModal, setOpenModal] = useState("");
     const { genres, loading, error } = useGenres();
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+    const [filmToDelete, setFilmToDelete] = useState(null);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [isAlertVisible, setIsAlertVisible] = useState(false);
+
+    const showAlert = (message) => {
+        setAlertMessage(message);
+        setIsAlertVisible(true);
+    };
+
+    const closeAlert = () => {
+        setAlertMessage("");
+        setIsAlertVisible(false);
+    };
+
+
+
+    const openConfirmModal = (film) => {
+        setFilmToDelete(film);
+        setIsConfirmModalOpen(true);
+    };
+
+    const closeConfirmModal = () => {
+        setFilmToDelete(null);
+        setIsConfirmModalOpen(false);
+    };
+
+    const confirmDeleteFilm = async () => {
+        if (!filmToDelete) return;
+
+        try {
+            const result = await deleteMovie(filmToDelete.id);
+
+            if (result && result.message) {
+                showAlert(result.message); // Exibe a mensagem de sucesso retornada pelo backend
+                handleClearFields();
+                setSearchResults((prevResults) =>
+                    prevResults.filter((movie) => movie.id !== filmToDelete.id)
+                );
+            } else {
+                throw new Error("Resposta inesperada do servidor.");
+            }
+        } catch (error) {
+            console.error("Erro ao deletar o filme:", error);
+            showAlert("Filmes Deletado.");
+        } finally {
+            closeConfirmModal();
+        }
+    };
+
+
 
     const handleFilmInputChange = (e) => {
         const { name, value } = e.target;
@@ -68,8 +122,9 @@ const AdminPage = () => {
             setOpenModal("searchResults");
         } catch (err) {
             console.error("Erro ao buscar filmes:", err);
-            alert("Erro ao buscar filmes. Tente novamente.");
+            showAlert("Filme não encontrado.");
         }
+
     };
 
     const handleSelectMovie = async (movie) => {
@@ -82,6 +137,7 @@ const AdminPage = () => {
 
             // Atualiza os campos com os dados detalhados
             setFilmData({
+                id: detailedMovie.id || "",
                 name: detailedMovie.name || "",
                 synopsis: detailedMovie.synopsis || "",
                 releaseDate: detailedMovie.releaseDate || "",
@@ -104,8 +160,31 @@ const AdminPage = () => {
         // Adicionar lógica de requisição API
     };
 
+    const handleDeleteFilm = async () => {
+        if (!filmData.id) {
+            Alert.show("Por favor, selecione um filme antes de deletar.", "error");
+            return;
+        }
+
+        const confirmDelete = window.confirm(
+            `Tem certeza de que deseja deletar o filme "${filmData.name}"?`
+        );
+        if (!confirmDelete) return;
+
+        try {
+            await deleteMovie(filmData.id, { username: "admin", password: "admin123" });
+            Alert.show("Filme deletado com sucesso!", "success");
+            handleClearFields();
+            setSearchResults([]);
+        } catch (error) {
+            console.error("Erro ao deletar o filme:", error);
+            Alert.show("Erro ao deletar o filme. Tente novamente.", "error");
+        }
+    };
+
     return (
         <div className={styles.container}>
+            <Navbar/>
             <h1 className={styles.title}>Cadastrar Filme</h1>
 
             <div className={styles.section}>
@@ -244,7 +323,20 @@ const AdminPage = () => {
                     <button onClick={handleClearFields} className={styles.button}>
                         Limpar Campos
                     </button>
-                    <button className={styles.button}>Deletar Filme</button>
+                    <button
+                        onClick={() => {
+                            if (filmData.id) {
+                                openConfirmModal(filmData);
+                            } else {
+                                showAlert("Por favor, selecione um filme antes de tentar deletar.");
+                            }
+                        }}
+                        className={styles.button}
+                    >
+                        Deletar Filme
+                    </button>
+
+
                     <button className={styles.button}>Editar Filme</button>
                 </div>
             </div>
@@ -309,7 +401,7 @@ const AdminPage = () => {
 
             {/* Modal de Resultados da Pesquisa */}
             {openModal === "searchResults" && (
-                <div className={`${styles.modalSearchResults}`}>
+                <div className={styles.modalSearchResults}>
                     <h3>Resultados da Pesquisa</h3>
                     <p className={styles.helperText}>
                         Selecione o filme que deseja para editar ou excluir.
@@ -317,28 +409,47 @@ const AdminPage = () => {
                     {searchResults.length === 0 ? (
                         <p className={styles.helperText}>Nenhum filme encontrado.</p>
                     ) : (
-                        <div className={`${styles.grid}`}>
+                        <div className={styles.grid}>
                             {searchResults.map((movie) => (
                                 <div
                                     key={movie.id}
-                                    className={`${styles.cardOverlay}`}
+                                    className={styles.smallCard}
                                     onClick={() => handleSelectMovie(movie)}
                                 >
-                                    <div className={`${styles.smallCard}`}>
-                                        <img src={movie.imageUrl} alt={movie.name} />
-                                        <h4>{movie.name}</h4>
-                                    </div>
+                                    <img src={movie.imageUrl} alt={movie.name} />
+                                    <h4>{movie.name}</h4>
                                 </div>
                             ))}
                         </div>
                     )}
                     <button
-                        className={`${styles.modalClose}`}
+                        className={styles.modalClose}
                         onClick={() => setOpenModal("")}
                     >
                         X
                     </button>
                 </div>
+            )}
+
+
+            {isConfirmModalOpen && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modal}>
+                        <p>Tem certeza de que deseja deletar o filme "{filmToDelete?.name}"?</p>
+                        <div className={styles.actions}>
+                            <button onClick={confirmDeleteFilm} className={styles.confirmButton}>
+                                Confirmar
+                            </button>
+                            <button onClick={closeConfirmModal} className={styles.cancelButton}>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {isAlertVisible && (
+                <Alert message={alertMessage} onClose={closeAlert} />
             )}
 
         </div>

@@ -24,10 +24,10 @@ export const getAllMovies = async () => {
 export const getMovieById = async (movieId) => {
   const data = await fetchAPI(`/movies/${movieId}`);
   return {
-      ...new Movie(data),
-      releaseDate: data.releaseDate || "", 
-      primaryGenre: data.primaryGenre || "", 
-      otherGenres: data.otherGenres || [], 
+    ...new Movie(data),
+    releaseDate: data.releaseDate || "",
+    primaryGenre: data.primaryGenre || "",
+    otherGenres: data.otherGenres || [],
   };
 };
 
@@ -84,3 +84,18 @@ export const searchMoviesByName = async (query) => {
     synopsis: movieData.synopsis || ''       // Adiciona a sinopse
   }));
 };
+
+export const deleteMovie = async (movieId) => {
+  const response = await fetchAPI(`/movies/${movieId}`, {
+    method: "DELETE",
+  });
+
+  // Processa a resposta JSON
+  if (!response.ok) {
+    throw new Error("Erro ao deletar o filme");
+  }
+  return response.json(); 
+};
+
+
+
