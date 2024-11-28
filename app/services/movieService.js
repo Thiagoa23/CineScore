@@ -6,7 +6,9 @@ import Movie from '../models/Movie';
 const formatReleaseDate = (date) => {
   if (!date) return "Data desconhecida";
   const formattedDate = new Date(date);
-  return !isNaN(formattedDate) ? formattedDate.getFullYear() : "Data desconhecida";
+  return !isNaN(formattedDate)
+    ? formattedDate.toISOString().split("T")[0] // Formata para 'yyyy-MM-dd'
+    : "Data desconhecida";
 };
 
 export const getAllMovies = async () => {
@@ -22,12 +24,13 @@ export const getAllMovies = async () => {
 export const getMovieById = async (movieId) => {
   const data = await fetchAPI(`/movies/${movieId}`);
   return {
-    ...new Movie(data),
-    releaseDate: formatReleaseDate(data.releaseDate), // Formata a data
-    primaryGenre: typeof data.primaryGenreName === 'string' ? data.primaryGenreName : '', // Garante que seja uma string
-    otherGenres: data.otherGenreNames || [],   // Garante que otherGenres seja uma lista vazia se não existir
+      ...new Movie(data),
+      releaseDate: data.releaseDate || "", 
+      primaryGenre: data.primaryGenre || "", 
+      otherGenres: data.otherGenres || [], 
   };
 };
+
 
 export const getTop10Movies = async () => {
   const data = await fetchAPI('/movies/top10');

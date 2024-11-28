@@ -8,7 +8,7 @@
   /* Permite que o card ampliado apareça além dos limites */
   z-index: 1;
   /* Garante que a seção tenha um nível adequado de exibição */
-  height: 45vh;
+  min-height: 45vh;
 }
 
 /* Título da seção */
@@ -16,7 +16,7 @@
 .title {
   font-size: 24px;
   margin-bottom: 15px;
-  padding: 0 40px;
+  padding: 0 10px;
   color: white;
   position: relative;
   /* Garante que o título não afete os elementos ao redor */

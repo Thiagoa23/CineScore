@@ -58,6 +58,7 @@ const GenreSection = ({ genre, movies }) => {
             return (
               <SwiperSlide className={styles.swiperSlide} key={index}>
                 <MovieCard
+                  id={movie.id}
                   title={movie.name}
                   genre={movie.primaryGenre}
                   rating={movie.rating}

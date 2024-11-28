@@ -1,7 +1,9 @@
 import { useState, useRef } from "react";
+import MovieModal from "../Movie Card/Modal/MovieModal"; // Importa o MovieModal
 import styles from "./MovieCard.module.css";
 
 const MovieCard = ({
+  id, // Adicionado para passar o ID do filme
   title,
   genre,
   rating,
@@ -16,6 +18,7 @@ const MovieCard = ({
 }) => {
   const [active, setActive] = useState(false); // Controle de ampliação
   const [remove, setRemove] = useState(true); // Controle de visibilidade do conteúdo adicional
+  const [isModalOpen, setIsModalOpen] = useState(false); // Controle do estado do modal
   const cardRef = useRef(null); // Referência do card para calcular posição
   const timeoutRef = useRef(0); // Gerencia o atraso da ampliação
 
@@ -53,59 +56,70 @@ const MovieCard = ({
     }
   };
 
-  return (
-    <div
-      ref={cardRef}
-      className={`${styles.movieCard} ${active ? styles.expanded : ""} ${
-        isFirstVisible
-          ? styles.firstCard
-          : isLastVisible
-          ? styles.lastCard
-          : isSecondLastVisible
-          ? styles.secondLastCard
-          : ""
-      }`}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
-      {!remove && (
-        <div className={styles.expandedContent}>
-          <div
-            className={styles.imageContainer}
-            style={{ backgroundImage: `url(${imageUrl})` }}
-          ></div>
-          <div className={styles.detailsContainer}>
-            <h3 className={styles.movieTitle}>{title}</h3>
-            <p className={styles.movieDetails}>
-              <span>{releaseDate || "Data desconhecida"}</span> |{" "}
-              <span>{genre || "Gênero Desconhecido"}</span>
-            </p>
-            <p className={styles.movieSynopsis}>
-              {truncateText(synopsis, 220)}
-            </p>
-            <button className={styles.viewMoreButton}>Ver mais</button>
-            <div className={styles.rating}>{rating || 0}</div>
-          </div>
-        </div>
-      )}
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
-      {!active && (
-        <div className={styles.collapsedContent}>
-          <div
-            className={styles.imageContainer}
-            style={{ backgroundImage: `url(${imageUrl})` }}
-          ></div>
-          <div className={styles.info}>
-            <h3>{title}</h3>
-            <div className={styles.details}>
-              <span>★ {rating}</span>
-              <span className={styles.separator}> | </span>
-              <span>{genre || "Gênero Desconhecido"}</span>
+  return (
+    <>
+      <div
+        ref={cardRef}
+        className={`${styles.movieCard} ${active ? styles.expanded : ""} ${
+          isFirstVisible
+            ? styles.firstCard
+            : isLastVisible
+            ? styles.lastCard
+            : isSecondLastVisible
+            ? styles.secondLastCard
+            : ""
+        }`}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        {!remove && (
+          <div className={styles.expandedContent}>
+            <div
+              className={styles.imageContainer}
+              style={{ backgroundImage: `url(${imageUrl})` }}
+            ></div>
+            <div className={styles.detailsContainer}>
+              <h3 className={styles.movieTitle}>{title}</h3>
+              <p className={styles.movieDetails}>
+                <span>{releaseDate || "Data desconhecida"}</span> |{" "}
+                <span>{genre || "Gênero Desconhecido"}</span>
+              </p>
+              <p className={styles.movieSynopsis}>
+                {truncateText(synopsis, 220)}
+              </p>
+              <button
+                className={styles.viewMoreButton}
+                onClick={() => openModal()}
+              >
+                Ver mais
+              </button>
+              <div className={styles.rating}>{rating || 0}</div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+
+        {!active && (
+          <div className={styles.collapsedContent}>
+            <div
+              className={styles.imageContainer}
+              style={{ backgroundImage: `url(${imageUrl})` }}
+            ></div>
+            <div className={styles.info}>
+              <h3>{title}</h3>
+              <div className={styles.details}>
+                <span>★ {rating}</span>
+                <span className={styles.separator}> | </span>
+                <span>{genre || "Gênero Desconhecido"}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      {isModalOpen && <MovieModal movieId={id} onClose={closeModal} />}
+    </>
   );
 };
 
